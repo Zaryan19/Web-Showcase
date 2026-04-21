@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ZannDoAnything — Produk Pilihan</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;500;700&display=swap');
+*{box-sizing:border-box}
+body{font-family:'Space Grotesk',sans-serif;background:#fff;margin:0;padding:0}
+.card-item{border:1.5px solid #000;transition:all 0.2s ease;cursor:pointer;display:flex;align-items:center;gap:0;text-decoration:none;color:inherit}
+.card-item:hover{background-color:#0055ff;color:#fff;transform:translate(-4px,-4px);box-shadow:6px 6px 0px #000}
+.card-item:hover .badge{background:#fff;color:#0055ff;border-color:#0055ff}
+.card-item:hover .item-num{color:#fff;opacity:0.7}
+.card-item:hover .item-name{color:#fff}
+.card-item:hover .item-cat{color:rgba(255,255,255,0.7);border-color:rgba(255,255,255,0.5)}
+.cat-btn{border:1.5px solid #000;font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:0.75rem;text-transform:uppercase;letter-spacing:0.08em;padding:0.4rem 1rem;cursor:pointer;background:#fff;transition:all 0.15s}
+.cat-btn:hover{background:#000;color:#fff}
+.cat-btn.active{background:#0055ff;color:#fff;border-color:#0055ff}
+.badge{background:#0055ff;color:#fff;font-size:0.65rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;padding:2px 8px;border:1.5px solid #000;transition:all 0.2s}
+</style>
+</head>
+<body class="p-6 md:p-14">
+
+<header class="mb-10 border-b-2 border-black pb-4 flex justify-between items-end flex-wrap gap-2">
+  <div>
+    <h1 class="text-4xl font-bold tracking-tighter uppercase">ZannDoAnything</h1>
+    <p class="text-sm opacity-60">Produk pilihan terbaik dengan harga terjangkau</p>
+  </div>
+  <div class="text-right font-bold text-blue-600 text-sm" id="thedate"></div>
+</header>
+
+<nav class="flex flex-wrap gap-2 mb-10">
+  <button class="cat-btn active" onclick="filter('semua',this)">Semua</button>
+  <button class="cat-btn" onclick="filter('shooting',this)">Shooting</button>
+  <button class="cat-btn" onclick="filter('elektronik',this)">elektronik</button>
+  <button class="cat-btn" onclick="filter('unik',this)">Unik</button>
+  <button class="cat-btn" onclick="filter('rumah',this)">Rumah</button>
+</nav>
+
+<div id="product-list" class="flex flex-col gap-4"></div>
+
+<footer class="mt-20 text-center text-[10px] uppercase tracking-[0.2em] opacity-40">
+   ©ZannDoAnything • Affiliate Links • Terimakasih Sudah Mengunjungi Showcase Ini
+</footer>
+
+<script>
+const products = [
+  {num:"01",name:"Gimbal Tripod Face Tracking",cat:"shooting",badge:"Useful",img:"img/tripodface.png",link:"https://s.shopee.co.id/LjSm8WbMY"},
+  {num:"02",name:"Korek Api Electric",cat:"elektronik",badge:"",img:"img/korekapielektrik.png",link:"https://s.shopee.co.id/AKWogjtHEo"},
+  {num:"03",name:"Strip Bawah Pintu",cat:"rumah",badge:"",img:"img/stripbawahpintu.png",link:"https://s.shopee.co.id/3qJKwrPTqi"},
+  {num:"04",name:"Bantal Sofa Sayur",cat:"unik",badge:"HOT",img:"img/bantalsofasayur.png",link:"https://s.shopee.co.id/gMJBI0H65"},
+  {num:"05",name:"Bantal Sofa Hantu",cat:"unik",badge:"HOT",img:"img/Bantalsofahantu.png",link:"https://s.shopee.co.id/AADOUmqf5D"},
+];
+
+function renderProducts(list){
+  const el = document.getElementById('product-list');
+  el.innerHTML = list.map(p=>`
+    <a href="${p.link}" target="_blank" rel="noopener" class="card-item p-4 md:p-5">
+      <span class="item-num text-3xl font-bold opacity-20 w-12 shrink-0 text-center">${p.num}</span>
+      <div class="w-16 h-16 shrink-0 mx-4 border border-black overflow-hidden">
+        <img src="${p.img}" alt="${p.name}" class="w-full h-full object-cover" onerror="this.style.background='#eee'">
+      </div>
+      <div class="flex-1 min-w-0">
+        <p class="item-name text-base font-bold uppercase leading-tight">${p.name}</p>
+        <div class="flex items-center gap-2 mt-1">
+          <span class="item-cat text-xs font-bold uppercase tracking-widest px-2 py-0.5 border border-current opacity-60">${p.cat}</span>
+          ${p.badge?`<span class="badge">${p.badge}</span>`:''}
+        </div>
+      </div>
+      <div class="shrink-0 ml-4 text-xl font-bold opacity-30">→</div>
+    </a>
+  `).join('');
+}
+
+function filter(cat, btn){
+  document.querySelectorAll('.cat-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  const filtered = cat==='semua' ? products : products.filter(p=>p.cat===cat);
+  renderProducts(filtered);
+}
+
+const now = new Date();
+document.getElementById('thedate').textContent = `${String(now.getDate()).padStart(2,'0')}.${String(now.getMonth()+1).padStart(2,'0')}.${now.getFullYear()}`;
+
+renderProducts(products);
+</script>
+</body>
+</html>
